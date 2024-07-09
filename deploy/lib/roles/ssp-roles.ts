@@ -5,10 +5,13 @@ import { Construct } from 'constructs';
 
 export class SSPRolesStack extends Stack {
     
+    public readonly sspBackRole: Role;
     
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
+        
+    
 
     }
 }
