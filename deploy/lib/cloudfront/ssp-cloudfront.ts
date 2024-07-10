@@ -3,10 +3,12 @@
 import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
-import { CloudFrontWebDistribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
+import { CloudFrontAllowedCachedMethods, CloudFrontWebDistribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
+import { CfnWebACL } from 'aws-cdk-lib/aws-wafv2';
 
 interface SSPCloudfrontStackProps extends StackProps {
     bucket: IBucket;
+    waf: CfnWebACL;
 }
 export class SSPCloudfrontStack extends Stack {
 
@@ -17,15 +19,18 @@ export class SSPCloudfrontStack extends Stack {
         const originAccessIdentity = new OriginAccessIdentity(this, 'SSPOriginAccess');
 
         const distribution = new CloudFrontWebDistribution(this, 'SSPFrontWebDistribution', {
+            defaultRootObject: 'index.html',
             originConfigs: [
                 {
                     s3OriginSource: {
                         s3BucketSource: props!.bucket,
                         originAccessIdentity: originAccessIdentity,
+                    
                     },
                     behaviors: [{ isDefaultBehavior: true }],
                 },
             ],
+            webACLId: props!.waf.attrArn
         });
 
         new CfnOutput(this, 'DistributionDomainName', { value: distribution.distributionDomainName });
