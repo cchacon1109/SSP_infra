@@ -39,6 +39,10 @@ jobs:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::987206564851:role/github-oidc-cdk
 
+      - name: Bootstrap CDK
+        run: |
+          cdk bootstrap aws://987206564851/us-east-1 --trust 987206564851
+
       - name: Deploy SSPApigatewayStack
         run: |
           cd deploy
