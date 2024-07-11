@@ -9,7 +9,7 @@ export class SSPApigatewayStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        this.sspApiGateway = new HttpApi(scope, 'SSPApiGateway', {
+        this.sspApiGateway = new HttpApi(this, 'SSPApiGateway', {
             apiName: 'SSPApiGateway',
             corsPreflight: {
                 allowMethods: [
