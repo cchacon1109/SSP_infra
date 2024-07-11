@@ -12,7 +12,7 @@ export class SSPBucketStack extends Stack {
         super(scope, id, props);
 
         this.bucket = new Bucket(this, 'SSPBucketSPAId', {
-            bucketName: 'SSPBucketSPA',
+            bucketName: 'ssp-bucket-spa',
             encryption: BucketEncryption.S3_MANAGED,
             removalPolicy: RemovalPolicy.DESTROY
         });
