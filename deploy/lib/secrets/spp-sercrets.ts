@@ -15,7 +15,7 @@ export class SSPSupabaseSecretStack extends Stack {
         super(scope, id, props);
 
         this.secret = new Secret(this, 'SSPSupabaseSecretId', {
-            secretName: 'SSPSupabaseSecret',
+            secretName: 'ssp-supabase-secret',
             secretObjectValue: {
                 supabaseUrl: SecretValue.unsafePlainText(props!.supabaseUrl),
                 supabaseKey: SecretValue.unsafePlainText(props!.supabaseKey)
