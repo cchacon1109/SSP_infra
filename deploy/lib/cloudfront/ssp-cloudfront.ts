@@ -16,9 +16,9 @@ export class SSPCloudfrontStack extends Stack {
         super(scope, id, props);
 
         
-        const originAccessIdentity = new OriginAccessIdentity(this, 'SSPOriginAccess');
+        const originAccessIdentity = new OriginAccessIdentity(this, 'SSPOriginAccessId');
 
-        const distribution = new CloudFrontWebDistribution(this, 'SSPFrontWebDistribution', {
+        const distribution = new CloudFrontWebDistribution(this, 'SSPFrontWebDistributionId', {
             defaultRootObject: 'index.html',
             originConfigs: [
                 {

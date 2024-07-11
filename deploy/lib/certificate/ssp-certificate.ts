@@ -11,11 +11,11 @@ export class SSPCertificateStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        const hostedZone = HostedZone.fromLookup(this, 'HostedZone', {
+        const hostedZone = HostedZone.fromLookup(this, 'HostedZoneId', {
             domainName: 'ssp.com',
         });
 
-        this.certificate = new Certificate(this, 'SSPCertificate', {
+        this.certificate = new Certificate(this, 'SSPCertificateId', {
             domainName: 'ssp.com',
             validation: CertificateValidation.fromDns(hostedZone),
         });

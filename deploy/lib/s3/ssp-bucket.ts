@@ -11,12 +11,12 @@ export class SSPBucketStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        this.bucket = new Bucket(this, 'SSPBucketSPA', {
+        this.bucket = new Bucket(this, 'SSPBucketSPAId', {
             bucketName: 'SSPBucketSPA',
             encryption: BucketEncryption.S3_MANAGED,
             removalPolicy: RemovalPolicy.DESTROY
         });
 
-        new CfnOutput(this, 'BucketName', { value: this.bucket.bucketName });
+        new CfnOutput(this, 'BucketNameOuput', { value: this.bucket.bucketName });
     }
 }

@@ -10,7 +10,7 @@ export class SSPWafStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        this.webAcl = new CfnWebACL(this, 'WebACL', {
+        this.webAcl = new CfnWebACL(this, 'SSPWebACLId', {
             defaultAction: { allow: {} },
             scope: 'REGIONAL',
             visibilityConfig: {
