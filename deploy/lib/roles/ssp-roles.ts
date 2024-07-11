@@ -14,7 +14,7 @@ export class SSPRolesStack extends Stack {
     constructor(scope: Construct, id: string, props?: SSPRolesStackProps) {
         super(scope, id, props);
 
-        this.sspBackRole = new Role(this, 'SSPBackRole', {
+        this.sspBackRole = new Role(this, 'SSPBackRoleId', {
             roleName: 'SSPBackRole',
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
         });
