@@ -1,21 +1,37 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { DeployStack } from '../lib/deploy-stack';
+import { SSPApigatewayStack } from '../lib/apigateway/apigateway';
+import { SSPCloudfrontStack } from '../lib/cloudfront/ssp-cloudfront';
+import { SSPSupabaseSecretStack } from '../lib/secrets/spp-sercrets';
+import { SSPBucketStack } from '../lib/s3/ssp-bucket';
+import { SSPWafStack } from '../lib/waf/spp-waf';
+import { SSPRolesStack } from '../lib/roles/ssp-roles';
+import { Tags } from 'aws-cdk-lib';
 
 const app = new cdk.App();
-new DeployStack(app, 'DeployStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+var apigateway = new SSPApigatewayStack(app, "SSPApigatewayStack");
 
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
-
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
+var secretsmanager = new SSPSupabaseSecretStack(app, "SSPSupabaseSecretStack", {
+    supabaseKey: process.env.SUPABASE_KEY!,
+    supabaseUrl: process.env.SUPABASE_URL!
 });
+
+var bucket = new SSPBucketStack(app, "SSPBucketStack");
+
+var waf = new SSPWafStack(app, "SSPWafStack");
+
+var cloudfront = new SSPCloudfrontStack(app, "SSPCloudFrontStack", {
+    bucket: bucket.bucket,
+    waf: waf.webAcl
+});
+
+var role = new SSPRolesStack(app, "SSPRolesStack");
+
+
+Tags.of(apigateway).add('environment', process.env.ENVIRONMENT!);
+Tags.of(secretsmanager).add('environment', process.env.ENVIRONMENT!);
+Tags.of(bucket).add('environment', process.env.ENVIRONMENT!);
+Tags.of(cloudfront).add('environment', process.env.ENVIRONMENT!);
+Tags.of(role).add('environment', process.env.ENVIRONMENT!);
