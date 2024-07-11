@@ -31,9 +31,3 @@ var cloudfront = new SSPCloudfrontStack(app, "SSPCloudFrontStack", {
 var role = new SSPRolesStack(app, "SSPRolesStack", {
     env: env
 });
-
-
-Tags.of(apigateway).add('environment', process.env.ENVIRONMENT!);
-Tags.of(secretsmanager).add('environment', process.env.ENVIRONMENT!);
-Tags.of(cloudfront).add('environment', process.env.ENVIRONMENT!);
-Tags.of(role).add('environment', process.env.ENVIRONMENT!);
