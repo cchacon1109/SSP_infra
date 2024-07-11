@@ -10,8 +10,8 @@ import { Tags } from 'aws-cdk-lib';
 const app = new cdk.App();
 
 var env = {
-    account: process.env.AWS_REGION,
-    region: process.env.AWS_ACCOUNT_ID
+    account: process.env.AWS_REGION!,
+    region: process.env.AWS_ACCOUNT_ID!
 };
 
 var apigateway = new SSPApigatewayStack(app, "SSPApigatewayStack", {
