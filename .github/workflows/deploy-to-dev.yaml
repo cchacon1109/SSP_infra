@@ -6,15 +6,58 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest  
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      GITHUB_OIDC_ROLE: arn:aws:iam::987206564851:role/github-oidc-cdk
     steps:
       
       - uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd deploy
+          npm install
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-3
+          role-to-assume: $GITHUB_OIDC_ROLE
+      
+      - name: Deploy SSPApigatewayStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPApigatewayStack --debug --trace
+
+      - name: Deploy SSPSupabaseSecretStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPSupabaseSecretStack --debug --trace
+
+      - name: Deploy SSPBucketStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPBucketStack --debug --trace
+
+      - name: Deploy SSPWafStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPWafStack --debug --trace
+
+      - name: Deploy SSPCloudFrontStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPCloudFrontStack --debug --trace
+
+      - name: Deploy SSPRolesStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPRolesStack --debug --trace
