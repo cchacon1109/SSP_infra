@@ -7,6 +7,7 @@ import { SSPSupabaseSecretStack } from '../lib/secrets/spp-sercrets';
 import { SSPBucketStack } from '../lib/s3/ssp-bucket';
 import { SSPWafStack } from '../lib/waf/spp-waf';
 import { SSPRolesStack } from '../lib/roles/ssp-roles';
+import { Tags } from 'aws-cdk-lib';
 
 const app = new cdk.App();
 
@@ -27,3 +28,10 @@ var cloudfront = new SSPCloudfrontStack(app, "SSPCloudFrontStack", {
 });
 
 var role = new SSPRolesStack(app, "SSPRolesStack");
+
+
+Tags.of(apigateway).add('environment', process.env.ENVIRONMENT!);
+Tags.of(secretsmanager).add('environment', process.env.ENVIRONMENT!);
+Tags.of(bucket).add('environment', process.env.ENVIRONMENT!);
+Tags.of(cloudfront).add('environment', process.env.ENVIRONMENT!);
+Tags.of(role).add('environment', process.env.ENVIRONMENT!);
