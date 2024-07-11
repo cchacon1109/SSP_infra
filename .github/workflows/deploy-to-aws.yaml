@@ -41,7 +41,7 @@ jobs:
 
       - name: Bootstrap CDK
         run: |
-          cdk bootstrap aws://987206564851/us-east-1 --trust 987206564851
+          cdk bootstrap aws://987206564851/us-east-1 --trust 987206564851 --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
 
       - name: Deploy SSPApigatewayStack
         run: |
