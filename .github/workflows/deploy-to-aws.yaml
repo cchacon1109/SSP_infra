@@ -11,7 +11,6 @@ jobs:
       id-token: write
       contents: read
     env:
-      GITHUB_OIDC_ROLE: arn:aws:iam::987206564851:role/github-oidc-cdk
       ENVIRONMENT: SSP_DEV
       AWS_REGION: us-east-1
       AWS_ACCOUNT_ID: 987206564851
@@ -33,7 +32,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: $GITHUB_OIDC_ROLE
+          role-to-assume: arn:aws:iam::987206564851:role/github-oidc-cdk
       
       - name: Deploy SSPApigatewayStack
         run: |
