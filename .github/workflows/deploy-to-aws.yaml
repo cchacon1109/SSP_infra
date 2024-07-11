@@ -38,6 +38,15 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::987206564851:role/github-oidc-cdk
+
+      - name: Bootstrap CDK
+        run: |
+          cdk bootstrap aws://987206564851/us-east-1
+
+      - name: Deploy SSPVpcStack
+        run: |
+          cd deploy
+          cdk deploy --require-approval never SSPVpcStack --debug --trace
       
       - name: Deploy SSPApigatewayStack
         run: |
