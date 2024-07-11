@@ -4,10 +4,10 @@ import { Construct } from 'constructs';
 
 export class SSPApigatewayStack extends Stack {
 
-    public readonly  sspApiGateway: HttpApi;
+    public readonly sspApiGateway: HttpApi;
 
     constructor(scope: Construct, id: string, props?: StackProps) {
-        super(scope, id);
+        super(scope, id, props);
 
         this.sspApiGateway = new HttpApi(scope, 'SSPApiGateway', {
             apiName: 'SSPApiGateway',
@@ -21,8 +21,7 @@ export class SSPApigatewayStack extends Stack {
                     CorsHttpMethod.POST,
                     CorsHttpMethod.PUT,
                 ],
-                allowOrigins: ['*'],
-                maxAge: Duration.seconds(0)
+                allowOrigins: ['*']
             }
         });
 
