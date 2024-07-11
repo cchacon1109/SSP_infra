@@ -13,6 +13,8 @@ jobs:
     env:
       GITHUB_OIDC_ROLE: arn:aws:iam::987206564851:role/github-oidc-cdk
       ENVIRONMENT: SSP_DEV
+      AWS_REGION: us-east-1
+      AWS_ACCOUNT_ID: 987206564851
     steps:
       
       - uses: actions/checkout@v3
