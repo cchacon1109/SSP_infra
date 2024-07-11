@@ -23,11 +23,16 @@ jobs:
         with:
           node-version: 20
 
+      - name: Prerequisite Installation
+        run: |
+          sudo npm install -g aws-cdk
+          cdk --version
+
       - name: Install dependencies
         run: |
           cd deploy
           npm install
-
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
