@@ -11,23 +11,38 @@ import { Tags } from 'aws-cdk-lib';
 
 const app = new cdk.App();
 
-var apigateway = new SSPApigatewayStack(app, "SSPApigatewayStack");
+var env = {
+    account: process.env.AWS_REGION,
+    region: process.env.AWS_ACCOUNT_ID
+};
+
+var apigateway = new SSPApigatewayStack(app, "SSPApigatewayStack", {
+    env: env
+});
 
 var secretsmanager = new SSPSupabaseSecretStack(app, "SSPSupabaseSecretStack", {
     supabaseKey: process.env.SUPABASE_KEY!,
-    supabaseUrl: process.env.SUPABASE_URL!
+    supabaseUrl: process.env.SUPABASE_URL!,
+    env: env
 });
 
-var bucket = new SSPBucketStack(app, "SSPBucketStack");
+var bucket = new SSPBucketStack(app, "SSPBucketStack", {
+    env: env
+});
 
-var waf = new SSPWafStack(app, "SSPWafStack");
+var waf = new SSPWafStack(app, "SSPWafStack", {
+    env: env
+});
 
 var cloudfront = new SSPCloudfrontStack(app, "SSPCloudFrontStack", {
     bucket: bucket.bucket,
-    waf: waf.webAcl
+    waf: waf.webAcl,
+    env: env
 });
 
-var role = new SSPRolesStack(app, "SSPRolesStack");
+var role = new SSPRolesStack(app, "SSPRolesStack", {
+    env: env
+});
 
 
 Tags.of(apigateway).add('environment', process.env.ENVIRONMENT!);
