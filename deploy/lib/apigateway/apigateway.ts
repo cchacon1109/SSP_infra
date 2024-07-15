@@ -10,7 +10,7 @@ export class SSPApigatewayStack extends Stack {
         super(scope, id, props);
 
         this.sspApiGateway = new HttpApi(this, 'SSPApiGatewayId', {
-            apiName: 'SSPApiGateway',
+            apiName: 'SSPApiGateway-v1',
             corsPreflight: {
                 allowMethods: [
                     CorsHttpMethod.DELETE,
@@ -22,7 +22,7 @@ export class SSPApigatewayStack extends Stack {
                     CorsHttpMethod.PUT,
                 ],
                 allowOrigins: ['*']
-            }
+            },
         });
 
         new CfnOutput(this, 'SSPApiGatewayOutput', { value: this.sspApiGateway.apiId });

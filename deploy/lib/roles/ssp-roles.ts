@@ -15,7 +15,7 @@ export class SSPRolesStack extends Stack {
         super(scope, id, props);
 
         this.sspBackRole = new Role(this, 'SSPBackRoleId', {
-            roleName: 'SSPBackRole',
+            roleName: 'SSPBackRole-v1',
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
         });
 

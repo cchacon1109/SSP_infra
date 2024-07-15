@@ -1,5 +1,5 @@
 //create new secret manager stack class
-import { Stack, StackProps, SecretValue } from 'aws-cdk-lib';
+import { Stack, StackProps, SecretValue, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 
@@ -16,12 +16,13 @@ export class SSPSupabaseSecretStack extends Stack {
         super(scope, id, props);
 
         this.secret = new Secret(this, 'SSPSupabaseSecretId', {
-            secretName: 'ssp-supabase-secret',
+            secretName: 'ssp-supabase-secret-v1',
             secretObjectValue: {
                 supabaseUrl: SecretValue.unsafePlainText(props!.supabaseUrl),
                 supabaseKey: SecretValue.unsafePlainText(props!.supabaseKey),
                 supabaseSecret: SecretValue.unsafePlainText(props!.supabaseSecret)
-            }
+            },
+            removalPolicy: RemovalPolicy.DESTROY
         });
     }
 }
