@@ -11,9 +11,14 @@ jobs:
       id-token: write
       contents: read
     env:
-      ENVIRONMENT: SSP_DEV
-      AWS_REGION: us-east-1
-      AWS_ACCOUNT_ID: 987206564851
+      ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_JWT_SECRET: ${{ secrets.SUPABASE_JWT_SECRET }}
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
     steps:
       
       - uses: actions/checkout@v3
@@ -34,14 +39,10 @@ jobs:
           npm install
       
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::987206564851:role/github-oidc-cdk
-
-      - name: Bootstrap CDK
-        run: |
-          cdk bootstrap aws://987206564851/us-east-1 --trust 987206564851 --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_ROLE }}
 
       - name: Deploy SSPApigatewayStack
         run: |
@@ -52,21 +53,6 @@ jobs:
         run: |
           cd deploy
           cdk deploy --require-approval never SSPSupabaseSecretStack --debug --trace
-
-      - name: Deploy SSPBucketStack
-        run: |
-          cd deploy
-          cdk deploy --require-approval never SSPBucketStack --debug --trace
-
-      - name: Deploy SSPWafStack
-        run: |
-          cd deploy
-          cdk deploy --require-approval never SSPWafStack --debug --trace
-
-      - name: Deploy SSPCloudFrontStack
-        run: |
-          cd deploy
-          cdk deploy --require-approval never SSPCloudFrontStack --debug --trace
 
       - name: Deploy SSPRolesStack
         run: |
