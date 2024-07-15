@@ -41,7 +41,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: $AWS_REGION
           role-to-assume: ${{ secrets.AWS_GITHUB_OIDC_ROLE }}
 
       - name: Deploy SSPApigatewayStack
