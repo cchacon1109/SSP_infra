@@ -2,16 +2,14 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { SSPApigatewayStack } from '../lib/apigateway/apigateway';
-import { SSPCloudfrontStack } from '../lib/cloudfront/ssp-cloudfront';
 import { SSPSupabaseSecretStack } from '../lib/secrets/spp-sercrets';
 import { SSPRolesStack } from '../lib/roles/ssp-roles';
-import { Tags } from 'aws-cdk-lib';
 
 const app = new cdk.App();
 
 var env = {
-    account: process.env.AWS_REGION!,
-    region: process.env.AWS_ACCOUNT_ID!
+    account: process.env.AWS_ACCOUNT_ID!,
+    region: process.env.AWS_REGION!
 };
 
 var apigateway = new SSPApigatewayStack(app, "SSPApigatewayStack", {
@@ -21,13 +19,11 @@ var apigateway = new SSPApigatewayStack(app, "SSPApigatewayStack", {
 var secretsmanager = new SSPSupabaseSecretStack(app, "SSPSupabaseSecretStack", {
     supabaseKey: process.env.SUPABASE_KEY!,
     supabaseUrl: process.env.SUPABASE_URL!,
-    env: env
-});
-
-var cloudfront = new SSPCloudfrontStack(app, "SSPCloudFrontStack", {
+    supabaseSecret: process.env.SUPABASE_SECRET!,
     env: env
 });
 
 var role = new SSPRolesStack(app, "SSPRolesStack", {
     env: env
 });
+

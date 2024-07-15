@@ -12,8 +12,11 @@ jobs:
       contents: read
     env:
       ENVIRONMENT: SSP_DEV
-      AWS_REGION: us-east-1
+      AWS_REGION: us-east-2
       AWS_ACCOUNT_ID: 987206564851
+      SUPABASE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt0eGhkaWZvam1sbHRlb3d6d3N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM4NDAxMDQsImV4cCI6MjAyOTQxNjEwNH0.sfACZieKDEXPsZcxZt3ov2FEMm46hlmFLPU7SbfA8Zs"
+      SUPABASE_JWT_SECRET: "5YMVe//fZMaaZ5jIlzTcucrsSaieEzljeoDo0aqEYhP0IuF/6tGpT5mYtNZoi20Sf8S3F78OkYVyk8ePs//KTQ=="
+      SUPABASE_URL: "https://ktxhdifojmllteowzwsz.supabase.co"
     steps:
       
       - uses: actions/checkout@v3
@@ -34,14 +37,10 @@ jobs:
           npm install
       
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::987206564851:role/github-oidc-cdk
-
-      - name: Bootstrap CDK
-        run: |
-          cdk bootstrap aws://987206564851/us-east-1 --trust 987206564851 --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
+          aws-region: us-east-2
+          role-to-assume: arn:aws:iam::987206564851:role/github-oidc-cdk-ssp
 
       - name: Deploy SSPApigatewayStack
         run: |
@@ -52,22 +51,7 @@ jobs:
         run: |
           cd deploy
           cdk deploy --require-approval never SSPSupabaseSecretStack --debug --trace
-
-      - name: Deploy SSPBucketStack
-        run: |
-          cd deploy
-          cdk deploy --require-approval never SSPBucketStack --debug --trace
-
-      - name: Deploy SSPWafStack
-        run: |
-          cd deploy
-          cdk deploy --require-approval never SSPWafStack --debug --trace
-
-      - name: Deploy SSPCloudFrontStack
-        run: |
-          cd deploy
-          cdk deploy --require-approval never SSPCloudFrontStack --debug --trace
-
+          
       - name: Deploy SSPRolesStack
         run: |
           cd deploy

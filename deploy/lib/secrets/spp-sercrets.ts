@@ -6,6 +6,7 @@ import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 interface SSPSupabaseSecretStackProps extends StackProps {
     supabaseUrl: string;
     supabaseKey: string;
+    supabaseSecret: string;
 }
 
 export class SSPSupabaseSecretStack extends Stack {
@@ -18,7 +19,8 @@ export class SSPSupabaseSecretStack extends Stack {
             secretName: 'ssp-supabase-secret',
             secretObjectValue: {
                 supabaseUrl: SecretValue.unsafePlainText(props!.supabaseUrl),
-                supabaseKey: SecretValue.unsafePlainText(props!.supabaseKey)
+                supabaseKey: SecretValue.unsafePlainText(props!.supabaseKey),
+                supabaseSecret: SecretValue.unsafePlainText(props!.supabaseSecret)
             }
         });
     }
